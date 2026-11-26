@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b3d2e">
+<title>ایران؛ نقشهٔ تمدن</title>
+<meta name="description" content="ایران به سبک نقشهٔ تمدن — ۳۱ استان با داده‌های واقعی، لنزهای جمعیت، اقتصاد، صنعت، کشاورزی، اقلیم و گردشگری.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="brand-mark">ایران</div>
+    <div class="brand-text">
+      <h1>ایران؛ نقشهٔ تمدن</h1>
+      <p>۳۱ استان، داده‌های واقعی، به سبک Civilization</p>
+    </div>
+  </div>
+  <div class="top-actions">
+    <button id="btn-theme" class="icon-btn" aria-label="تغییر تم">◐</button>
+    <button id="btn-about" class="icon-btn" aria-label="دربارهٔ داده‌ها">؟</button>
+  </div>
+</header>
+
+<div class="search-row">
+  <input id="search" type="search" placeholder="جست‌وجوی استان یا شهر… (مثلاً اصفهان)" autocomplete="off">
+  <div id="search-results" class="search-results" hidden></div>
+</div>
+
+<nav class="lens-row" id="lens-row" aria-label="لنزهای نقشه"></nav>
+
+<main class="tabs">
+  <section id="tab-map" class="tab active">
+    <div class="map-wrap" id="map-wrap">
+      <svg id="map" viewBox="0 0 860 790" role="img" aria-label="نقشهٔ استان‌های ایران"></svg>
+      <div class="map-tools">
+        <button id="zoom-in" aria-label="بزرگ‌نمایی">＋</button>
+        <button id="zoom-out" aria-label="کوچک‌نمایی">－</button>
+        <button id="zoom-reset" aria-label="نمای کامل">⤢</button>
+      </div>
+      <div class="map-toggles">
+        <label><input type="checkbox" id="toggle-names" checked> نام استان‌ها</label>
+        <label><input type="checkbox" id="toggle-cities" checked> شهرها</label>
+      </div>
+      <div class="legend" id="legend"></div>
+    </div>
+    <div class="hint">روی هر استان بزن تا جزئیاتش باز شود • برای جابه‌جایی بکش، برای بزرگ‌نمایی دو انگشت یا دکمه‌ها</div>
+  </section>
+
+  <section id="tab-provinces" class="tab">
+    <div class="sort-row">
+      <span>مرتب‌سازی:</span>
+      <button class="sort-btn active" data-sort="pop">جمعیت</button>
+      <button class="sort-btn" data-sort="density">تراکم</button>
+      <button class="sort-btn" data-sort="area">مساحت</button>
+      <button class="sort-btn" data-sort="fa">نام</button>
+    </div>
+    <ul id="province-list" class="rank-list"></ul>
+  </section>
+
+  <section id="tab-cities" class="tab">
+    <ul id="city-list" class="rank-list"></ul>
+  </section>
+
+  <section id="tab-about" class="tab">
+    <div class="about-card">
+      <h2>دربارهٔ داده‌ها</h2>
+      <p><b>ایران؛ نقشهٔ تمدن</b> ایده‌ای است به سبک پروژهٔ <a href="https://karpathy.ai/usaciv" target="_blank" rel="noopener">usaciv کارپتی</a> که آمریکا را با داده‌های واقعی به نقشهٔ Civilization تبدیل کرد — اینجا همان کار برای ایران.</p>
+      <h3>منابع</h3>
+      <ul>
+        <li><b>مرز استان‌ها:</b> GADM نسخهٔ ۴٫۱ (gadm.org) — عمومی، ساده‌شده برای وب.</li>
+        <li><b>جمعیت استان‌ها و شهرها و مساحت:</b> سرشماری ۱۳۹۵ مرکز آمار ایران (از طریق citypopulation.de). اعداد دقیق همان سرشماری‌اند؛ جمعیت امروز بیشتر است.</li>
+        <li><b>تخصص و «محله» (district) هر استان:</b> بر پایهٔ واقعیت اقتصادی هر استان — نفت خوزستان، فولاد اصفهان، مس کرمان، برنج گیلان، زعفران خراسان جنوبی و…</li>
+        <li><b>شاخص‌های اقتصاد، صنعت، کشاورزی و گردشگری:</b> شاخص تقریبی ۰ تا ۱۰۰، نه آمار رسمی؛ فقط برای مقایسهٔ کیفی استان‌ها.</li>
+      </ul>
+      <h3>دقت نقشه</h3>
+      <p>مرزها از دادهٔ GADM با ساده‌سازی هندسی (۰٫۰۲ درجه) رسم شده‌اند؛ برای مرور کلی مناسب‌اند، نه کار نقشه‌برداری. مختصات شهرها تقریبی است.</p>
+      <p class="muted">نسخه <span id="about-version"></span> • ساخته‌شده با جاوااسکریپت ساده و SVG، بدون هیچ وابستگی خارجی — کاملاً آفلاین کار می‌کند.</p>
+    </div>
+  </section>
+</main>
+
+<nav class="bottombar">
+  <button class="tab-btn active" data-tab="tab-map">🗺️ نقشه</button>
+  <button class="tab-btn" data-tab="tab-provinces">📋 استان‌ها</button>
+  <button class="tab-btn" data-tab="tab-cities">🏙️ شهرها</button>
+  <button class="tab-btn" data-tab="tab-about">ℹ️ درباره</button>
+</nav>
+
+<div id="sheet" class="sheet" hidden>
+  <div class="sheet-handle"></div>
+  <button id="sheet-close" class="sheet-close" aria-label="بستن">✕</button>
+  <div id="sheet-body" class="sheet-body"></div>
+</div>
+<div id="sheet-backdrop" class="sheet-backdrop" hidden></div>
+
+<script src="js/version.js"></script>
+<script src="js/paths.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+}
+</script>
+</body>
+</html>
